@@ -5,7 +5,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: LTExercise::LTExercise.LambdaHandler::FunctionHandlerAsync
-      CodeUri: src/HelloWorld/bin/Release/net6.0/src.zip
+      CodeUri: src/bin/Release/net6.0/src.zip
       Runtime: dotnetcore6.0
       MemorySize: 512
       Timeout: 20
