@@ -6,7 +6,7 @@ Resources:
     Properties:
       Handler: LTExercise::LTExercise.LambdaHandler::FunctionHandlerAsync
       CodeUri: src/bin/Release/net6.0/src.zip
-      Runtime: dotnetcore6.0
+      Runtime: dotnet6
       MemorySize: 512
       Timeout: 20
       AutoPublishAlias: live
