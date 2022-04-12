@@ -15,7 +15,7 @@ namespace LTExercise
         {
             return WebHost.
                 CreateDefaultBuilder(args).
-                UseStartup<Startup>();
+                UseStartup<Startup>().UseLambdaServer();
         }
     }
     public class LambdaHandler : APIGatewayHttpApiV2ProxyFunction<Program>
