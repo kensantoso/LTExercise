@@ -1,4 +1,7 @@
-namespace console;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LTExercise;
 
 public class Utilities
 {
@@ -23,21 +26,15 @@ public class Utilities
             {
                 var newSubset = new List<T>();
                 foreach(var temp in subsets[j])
-                    newSubset.Add(temp);
-
+                newSubset.Add(temp);
                 newSubset.Add(set[i]);
-
-
                 newSubsets.Add(newSubset);
             }
-
             subsets.AddRange(newSubsets);
         }
 
         // Add in the last element
         subsets.Add(new List<T>(){set[set.Count - 1]});
-        //subsets.Sort();
-
         return subsets;
     }
 }

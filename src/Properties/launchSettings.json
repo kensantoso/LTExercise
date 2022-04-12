@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "ltreeTest": {
+    "LTreeExercise": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
