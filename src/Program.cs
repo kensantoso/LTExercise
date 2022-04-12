@@ -1,29 +1,30 @@
-using LTExercise;
+using Amazon.Lambda.AspNetCoreServer;
 using LTExercise.LogAnalysis;
+using Microsoft.AspNetCore;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddSingleton<ILogRepository, LogRepository>();
-builder.Services.AddSingleton<LogService>();
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+namespace LTExercise
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateWebHostBuilder(args).Build().Run();
+        }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.
+                CreateDefaultBuilder(args).
+                UseStartup<Startup>();
+        }
+    }
+    public class LambdaHandler : APIGatewayHttpApiV2ProxyFunction<Program>
+    {
+        protected override IWebHostBuilder CreateWebHostBuilder()
+        {
+            return Program.CreateWebHostBuilder(null);
+        }
+    }
 }
 
-app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

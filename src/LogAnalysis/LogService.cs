@@ -26,20 +26,15 @@ namespace LTExercise.LogAnalysis
             var maxKey = "";
             foreach (var record in sorted)
             {
-                //add login users
-                if (record.EventType == "login")
+                if (record.EventType == "logout" && loggedIn.Any(x =>x.Time == record.Time))
                 {
-                    loggedIn.Add(new Session(record));
+                    var logOutIndex = loggedIn.FindIndex(x => x.Time == record.Time && x.Name != record.Name);
+                    loggedIn[logOutIndex].LogOutTime = record.Time;
+                    loggedIn[logOutIndex].CurrentlyLoggedIn = false;
                 }
 
-                //logout user if they are logged in
-                if (record.EventType == "logout" && loggedIn.Any(x => x.Name == record.Name && x.LogOutTime == 0))
-                {
-                    var index = loggedIn.FindIndex(x => x.Name == record.Name && x.LogOutTime == 0);
-                    loggedIn[index].LogOutTime = record.Time;
-                }
-                // only loop over completed sessions
-                var currentlyLoggedIn = loggedIn.Where(x=>x.LogOutTime==0);
+                // only loop over in progress sessions
+                var currentlyLoggedIn = loggedIn.Where(x=>x.CurrentlyLoggedIn);
                 if (currentlyLoggedIn.Count() > 1)
                 {
                     //find subsets e.g. 5 users logged in, get combo of all remaining sessions. 
@@ -47,6 +42,7 @@ namespace LTExercise.LogAnalysis
                     //store grouped sessions as dictionary
                     foreach (var set in subsets)
                     {
+                        // order names for dictionary consistency
                         var key = String.Join(",", set.Select(x => x.Name).OrderBy(x => x).ToList());
                         if (groups.ContainsKey(key) && !groups[key].Any(x =>x.SequenceEqual(set)))
                         {
@@ -69,9 +65,26 @@ namespace LTExercise.LogAnalysis
                         maxKey = value.Key;
                     }
                 }
+                //add login users
+                if (record.EventType == "login")
+                {
+                    loggedIn.Add(new Session(record){CurrentlyLoggedIn = true});
+                }
+
+                //logout user if they are logged in
+                if (record.EventType == "logout" && loggedIn.Any(x => x.Name == record.Name && x.LogOutTime == 0))
+                {
+                    var index = loggedIn.FindIndex(x => x.Name == record.Name && x.LogOutTime == 0);
+                    loggedIn[index].LogOutTime = record.Time;
+                    loggedIn[index].CurrentlyLoggedIn = false;
+                }
             }
             //here we can just get the latest login time and earliest logout time which will show the overlap. 
             var times = new List<SharedSessionResponse>();
+            if (maxKey == "")
+            {
+                return times;
+            }
             foreach (var loggedSession in groups[maxKey])
             {
                 var loginTime = loggedSession.Max(t => t.Time);
@@ -91,6 +104,7 @@ namespace LTExercise.LogAnalysis
         {
         }
         public int LogOutTime { get; set; }
+        public bool CurrentlyLoggedIn { get; set; }
     }
     public record SharedSessionResponse(string Names, int StartTime, int EndTime);
 }

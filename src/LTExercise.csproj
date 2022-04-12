@@ -5,14 +5,18 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>LTExercise</RootNamespace>
+    <AWSProjectType>Lambda</AWSProjectType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="7.1.0" />
     <PackageReference Include="CsvHelper" Version="27.2.1" />
   </ItemGroup>
-
   <ItemGroup>
+    <InternalsVisibleTo Include="LTExerciseTest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".github\workflows\ci.yml" />
     <Content Include="test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
