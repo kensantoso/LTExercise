@@ -26,4 +26,16 @@ I usually do development this way and then use a profiler to test code hot spots
 ### The solution. 
 
 I created a few unit tests to cover the logic(no overlaps, make sure to return correct values etc). The integration test just covers the API. I initially did this as a console app but I think a webapi is a bit nicer. 
-I could have done some more on editor configs, linting, and more abstraction if that's what you need or what your coding standards are. 
+I could have done some more on editor configs, linting, and more abstraction if that's what you need or what your coding standards are. The tests are setup in a way that you can just feel free to edit the code and it should catch. 
+I just loaded the data via a csv but it should be fairly easy to sub in your own data store. 
+
+### CI/CD
+
+I used github actions to deploy this to a lambda. The endpoint is live.
+In the github folder the following pipeline runs on any changes to `main`.
+* Setting up .Net SDK and AWS Lambda CLI
+* Run unit and integration tests
+* Build and package app into a zip file suitable for upload to AWS
+* Log into AWS (this requires you to [configure AWS creds in GitHub][aws-action])
+* Use CloudFormation to deploy the Lambda function and HTTP API
+
