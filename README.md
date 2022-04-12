@@ -41,3 +41,11 @@ In the github folder the following pipeline runs on any changes to `main`.
 * Log into AWS (this requires you to [configure AWS creds in GitHub][aws-action])
 * Use CloudFormation to deploy the Lambda function and HTTP API
 
+### Try it out
+The endpoint is live and takes a To and From time in integers. I won't put the endpoint up here but I can share it with you if you need. 
+
+```shell
+curl -X 'GET' \
+  'https://URL_FROM_AWS/LogAnalysis?from=0&to=9999' \
+  -H 'accept: text/plain'
+```
