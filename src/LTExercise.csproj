@@ -16,7 +16,6 @@
     <InternalsVisibleTo Include="LTExerciseTest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include=".github\workflows\ci.yml" />
     <Content Include="test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
